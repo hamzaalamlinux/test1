@@ -3,7 +3,7 @@ name: Auto-Merge Feature Branch to Main
 on:
   push:
     branches:
-      - feature/**  # Trigger for any branch starting with 'feature/'
+      - feature/*  # Trigger for any branch starting with 'feature/'
 
   workflow_dispatch:  # Optional: Allows manual workflow trigger
 
