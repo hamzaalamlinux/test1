@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - feature/*  # Trigger for any branch starting with 'feature/'
-      
+
+  workflow_dispatch:  # Optional: Allows manual triggering of this workflow
+
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
