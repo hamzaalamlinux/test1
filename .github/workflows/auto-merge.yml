@@ -29,14 +29,14 @@ jobs:
       # Step 4: Automatically Create a Pull Request
       - name: Create a Pull Request (PR)
         run: |
-          gh pr create --title "Auto Merge from ${{ github.ref }}" --body "This PR was created automatically" --base main --head ${{ github.ref#refs/heads/ }}
+          gh pr create --title "Auto Merge from ${{ github.ref }}" --body "This PR was created automatically" --base main --head --head "${{ github.head_ref }}"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       # Step 5: Approve and Merge PR
       - name: Approve and Merge PR
         run: |
-          pr_number=$(gh pr list --head ${{ github.ref#refs/heads/ }} --json number --jq '.[0].number')
+          pr_number=$(gh pr list --head --head "${{ github.head_ref }}" --json number --jq '.[0].number')
           gh pr review $pr_number --approve
           gh pr merge $pr_number --merge
         env:
