@@ -22,8 +22,8 @@ jobs:
       # Step 3: Configure Git for the Action
       - name: Configure Git
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "action@github.com"
+          git config --global user.name "hamzaalamlinux"
+          git config --global user.email "alamhamza873@gmail.com"
       
       # Step 4: Automatically create a pull request
       - name: Create a Pull Request (PR)
