@@ -1,38 +1,39 @@
 name: Auto-Merge Feature Branch to Main
 
-# Trigger the workflow when there is a push to the feature branch
 on:
   push:
     branches:
-      - feature/*    # This triggers on any branch that starts with 'feature/'
+      - feature/**  # Trigger for any branch starting with 'feature/'
+
+  workflow_dispatch:  # Optional: Allows manual workflow trigger
 
 jobs:
   auto-merge:
     runs-on: ubuntu-latest
-    
+
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
       
-      # Step 2: Setup GitHub CLI
+      # Step 2: Setup GitHub CLI (Install)
       - name: Install GitHub CLI
         uses: cli/gh-action@v2
 
-      # Step 3: Configure Git for the Action
+      # Step 3: Configure Git (Set GitHub user)
       - name: Configure Git
         run: |
           git config --global user.name "hamzaalamlinux"
           git config --global user.email "alamhamza873@gmail.com"
-      
-      # Step 4: Automatically create a pull request
+
+      # Step 4: Automatically Create a Pull Request
       - name: Create a Pull Request (PR)
         run: |
           gh pr create --title "Auto Merge from ${{ github.ref }}" --body "This PR was created automatically" --base main --head ${{ github.ref#refs/heads/ }}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # Step 5: Approve and Merge the Pull Request automatically
+      # Step 5: Approve and Merge PR
       - name: Approve and Merge PR
         run: |
           pr_number=$(gh pr list --head ${{ github.ref#refs/heads/ }} --json number --jq '.[0].number')
