@@ -17,7 +17,7 @@ jobs:
       
       # Step 2: Setup GitHub CLI
       - name: Install GitHub CLI
-        run: sudo apt-get install -y gh
+        uses: cli/gh-action@v2
 
       # Step 3: Configure Git for the Action
       - name: Configure Git
