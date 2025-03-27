@@ -3,9 +3,9 @@ name: Auto-Merge Feature Branch to Main
 on:
   push:
     branches:
-      - feature/**  # Trigger for any branch starting with 'feature/'
+      - feature/*  # Trigger for any branch starting with 'feature/'
 
-  workflow_dispatch:  # Optional: Allows manual workflow trigger
+  workflow_dispatch:  # Optional: Allows manual triggering of this workflow
 
 jobs:
   auto-merge:
@@ -15,29 +15,18 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout Code
         uses: actions/checkout@v3
-      
-      # Step 2: Setup GitHub CLI (Install)
-      - name: Install GitHub CLI
-        uses: cli/gh-action@v2
 
-      # Step 3: Configure Git (Set GitHub user)
+      # Step 2: Configure Git
       - name: Configure Git
         run: |
           git config --global user.name "hamzaalamlinux"
           git config --global user.email "alamhamza873@gmail.com"
 
-      # Step 4: Automatically Create a Pull Request
-      - name: Create a Pull Request (PR)
+      # Step 3: Merge feature branch into main
+      - name: Merge Branch into Main
         run: |
-          gh pr create --title "Auto Merge from ${{ github.ref }}" --body "This PR was created automatically" --base main --head --head "${{ github.head_ref }}"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # Step 5: Approve and Merge PR
-      - name: Approve and Merge PR
-        run: |
-          pr_number=$(gh pr list --head --head "${{ github.head_ref }}" --json number --jq '.[0].number')
-          gh pr review $pr_number --approve
-          gh pr merge $pr_number --merge
+          git checkout main  # Switch to the main branch
+          git merge "${{ github.ref_name }}"  # Merge the feature branch into main
+          git push origin main  # Push the merged changes to the main branch
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
